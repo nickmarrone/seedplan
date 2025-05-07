@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
     Container,
     Paper,
@@ -10,12 +10,13 @@ import {
     Link,
 } from '@mui/material';
 import axios from 'axios';
-import { LoginCredentials } from '../types/auth';
+import { RegisterCredentials } from '../types/auth';
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState<LoginCredentials>({
+    const [formData, setFormData] = useState<RegisterCredentials>({
         email: '',
+        username: '',
         password: '',
     });
     const [error, setError] = useState<string>('');
@@ -30,15 +31,15 @@ const Login: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const formDataObj = new FormData();
-            formDataObj.append('username', formData.email);
-            formDataObj.append('password', formData.password);
-
-            const response = await axios.post('http://localhost:8000/token', formDataObj);
-            localStorage.setItem('token', response.data.access_token);
-            navigate('/dashboard');
-        } catch (err) {
-            setError('Invalid email or password');
+            const response = await axios.post('http://localhost:8000/register', formData);
+            // After successful registration, redirect to login
+            navigate('/login');
+        } catch (err: any) {
+            if (err.response?.data?.detail) {
+                setError(err.response.data.detail);
+            } else {
+                setError('An error occurred during registration');
+            }
         }
     };
 
@@ -54,7 +55,7 @@ const Login: React.FC = () => {
             >
                 <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
                     <Typography component="h1" variant="h5" align="center">
-                        Sign in to SeedPlan
+                        Create your SeedPlan account
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                         <TextField
@@ -73,11 +74,22 @@ const Login: React.FC = () => {
                             margin="normal"
                             required
                             fullWidth
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
                             name="password"
                             label="Password"
                             type="password"
                             id="password"
-                            autoComplete="current-password"
+                            autoComplete="new-password"
                             value={formData.password}
                             onChange={handleChange}
                         />
@@ -92,11 +104,11 @@ const Login: React.FC = () => {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Sign In
+                            Sign Up
                         </Button>
                         <Box sx={{ textAlign: 'center' }}>
-                            <Link component={RouterLink} to="/register" variant="body2">
-                                {"Don't have an account? Sign Up"}
+                            <Link href="/login" variant="body2">
+                                {"Already have an account? Sign In"}
                             </Link>
                         </Box>
                     </Box>
@@ -106,4 +118,4 @@ const Login: React.FC = () => {
     );
 };
 
-export default Login; 
+export default Register; 

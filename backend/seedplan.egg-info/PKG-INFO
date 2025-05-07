@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: seedplan
+Version: 0.1.0
+Summary: SeedPlan Backend
+Requires-Python: >=3.11
