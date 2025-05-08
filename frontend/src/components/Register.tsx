@@ -17,6 +17,7 @@ const Register: React.FC = () => {
     const [formData, setFormData] = useState<RegisterCredentials>({
         email: '',
         username: '',
+        full_name: '',
         password: '',
     });
     const [error, setError] = useState<string>('');
@@ -53,6 +54,24 @@ const Register: React.FC = () => {
                     alignItems: 'center',
                 }}
             >
+                <Box
+                    component="img"
+                    src="/seed-sprout.svg"
+                    alt="SeedPlan Logo"
+                    sx={{
+                        width: 120,
+                        height: 120,
+                        mb: 2
+                    }}
+                />
+                <Typography component="h1" variant="h4" align="center" gutterBottom>
+                    SeedPlan
+                </Typography>
+                <Typography variant="subtitle1" align="center" color="text.secondary" sx={{ mb: 4 }}>
+                    Plan your seed starting, track your garden's success, and learn from year to year.
+                    <br />
+                    Your personal garden planning companion.
+                </Typography>
                 <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
                     <Typography component="h1" variant="h5" align="center">
                         Create your SeedPlan account
@@ -62,11 +81,22 @@ const Register: React.FC = () => {
                             margin="normal"
                             required
                             fullWidth
+                            id="full_name"
+                            label="Full Name"
+                            name="full_name"
+                            autoComplete="name"
+                            autoFocus
+                            value={formData.full_name}
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
                             id="email"
                             label="Email Address"
                             name="email"
                             autoComplete="email"
-                            autoFocus
                             value={formData.email}
                             onChange={handleChange}
                         />

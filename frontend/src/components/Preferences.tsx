@@ -12,10 +12,10 @@ import {
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import axios from 'axios';
 import { User } from '../types/auth';
 import Navigation from './Navigation';
 import { format, parse, isValid } from 'date-fns';
+import api from '../utils/axios';
 
 interface LocationData {
     latitude: number;
@@ -37,10 +37,7 @@ const Preferences: React.FC = () => {
 
     const fetchUserData = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get<User>('http://localhost:8000/users/me', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await api.get<User>('/users/me');
             setUser(response.data);
         } catch (err) {
             setError('Failed to load user data');
@@ -79,7 +76,7 @@ const Preferences: React.FC = () => {
     const handleZipcodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const zipcode = e.target.value;
         // Only allow numeric input and limit to 5 digits
-        if (!/^\d*$/.test(zipcode) || zipcode.length > 5) {
+        if (!/^\d*$/.test(zipcode)) {
             return;
         }
         
@@ -92,7 +89,7 @@ const Preferences: React.FC = () => {
 
         if (zipcode.length === 5) {
             try {
-                const response = await axios.get<LocationData>(`http://localhost:8000/location/${zipcode}`);
+                const response = await api.get<LocationData>(`/location/${zipcode}`);
                 setLocationData(response.data);
                 if (user) {
                     setUser({
@@ -110,10 +107,7 @@ const Preferences: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
-            await axios.put('http://localhost:8000/users/me', user, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await api.put('/users/me', user);
             setSuccess('Preferences updated successfully');
             setError('');
         } catch (err) {
@@ -135,18 +129,36 @@ const Preferences: React.FC = () => {
                         Garden Preferences
                     </Typography>
                     <Paper elevation={3} sx={{ p: 4 }}>
-                        <Box component="form" onSubmit={handleSubmit}>
+                        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="full_name"
+                                label="Full Name"
+                                name="full_name"
+                                autoComplete="name"
+                                value={user?.full_name || ''}
+                                onChange={handleChange}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                disabled
+                                value={user?.email || ''}
+                                sx={{
+                                    '& .MuiInputBase-input.Mui-disabled': {
+                                        WebkitTextFillColor: 'rgba(0, 0, 0, 0.87)',
+                                    },
+                                }}
+                            />
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        label="Full Name"
-                                        name="full_name"
-                                        value={user?.full_name || ''}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
                                     <TextField
                                         fullWidth
                                         label="Gardening Zone"
@@ -165,6 +177,11 @@ const Preferences: React.FC = () => {
                                         onChange={handleZipcodeChange}
                                         error={!!error}
                                         helperText={error}
+                                        inputProps={{
+                                            maxLength: 5,
+                                            inputMode: 'numeric',
+                                            pattern: '[0-9]*'
+                                        }}
                                     />
                                 </Grid>
                                 {locationData && (

@@ -52,10 +52,25 @@ const Login: React.FC = () => {
                     alignItems: 'center',
                 }}
             >
+                <Box
+                    component="img"
+                    src="/seed-sprout.svg"
+                    alt="SeedPlan Logo"
+                    sx={{
+                        width: 120,
+                        height: 120,
+                        mb: 2
+                    }}
+                />
+                <Typography component="h1" variant="h4" align="center" gutterBottom>
+                    SeedPlan
+                </Typography>
+                <Typography variant="subtitle1" align="center" color="text.secondary" sx={{ mb: 4 }}>
+                    Plan your seed starting, track your garden's success, and learn from year to year.
+                    <br />
+                    Your personal garden planning companion.
+                </Typography>
                 <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
-                    <Typography component="h1" variant="h5" align="center">
-                        Sign in to SeedPlan
-                    </Typography>
                     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
