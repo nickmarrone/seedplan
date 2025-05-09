@@ -1,11 +1,10 @@
-from .user import User, UserCreate, UserUpdate
+from .user import User, UserBase
 from .seed import Seed, SeedCreate, SeedBase
 from .task import Task, TaskCreate, TaskBase
 
 __all__ = [
     'User',
-    'UserCreate',
-    'UserUpdate',
+    'UserBase',
     'Seed',
     'SeedCreate',
     'SeedBase',
