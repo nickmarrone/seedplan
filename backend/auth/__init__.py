@@ -5,6 +5,7 @@ from .auth import (
     create_access_token,
     verify_password,
     get_password_hash,
+    ACCESS_TOKEN_EXPIRE_MINUTES,
 )
 
 __all__ = [
@@ -12,4 +13,5 @@ __all__ = [
     "create_access_token",
     "verify_password",
     "get_password_hash",
+    "ACCESS_TOKEN_EXPIRE_MINUTES",
 ]
