@@ -12,7 +12,6 @@ export interface Seed {
     seed_spacing?: string;
     seed_notes?: string;
     color?: string;
-    is_system: boolean;
     user_id?: number;
     created_at: string;
     updated_at?: string;

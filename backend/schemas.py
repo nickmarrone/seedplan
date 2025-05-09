@@ -20,7 +20,6 @@ class SeedCreate(SeedBase):
 
 class Seed(SeedBase):
     id: int
-    is_system: bool
     user_id: Optional[int]
     created_at: date
     updated_at: Optional[date]

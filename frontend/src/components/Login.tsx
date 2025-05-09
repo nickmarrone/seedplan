@@ -31,7 +31,7 @@ const Login: React.FC = () => {
         e.preventDefault();
         try {
             const formDataObj = new FormData();
-            formDataObj.append('username', formData.email);
+            formDataObj.append('email', formData.email);
             formDataObj.append('password', formData.password);
 
             const response = await axios.post('http://localhost:8000/auth/token', formDataObj);

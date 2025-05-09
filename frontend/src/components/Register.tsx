@@ -16,7 +16,6 @@ const Register: React.FC = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState<RegisterCredentials>({
         email: '',
-        username: '',
         full_name: '',
         password: '',
     });
@@ -93,17 +92,6 @@ const Register: React.FC = () => {
                             name="email"
                             autoComplete="email"
                             value={formData.email}
-                            onChange={handleChange}
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="username"
-                            label="Username"
-                            name="username"
-                            autoComplete="username"
-                            value={formData.username}
                             onChange={handleChange}
                         />
                         <TextField

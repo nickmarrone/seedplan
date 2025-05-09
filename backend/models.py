@@ -21,7 +21,6 @@ class Seed(Base):
     seed_spacing = Column(Text)
     seed_notes = Column(Text)
     color = Column(String)
-    is_system = Column(Boolean, default=False)  # Whether this is a system-wide variety
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)  # Null for system varieties
     created_at = Column(Date, nullable=False)
     updated_at = Column(Date)

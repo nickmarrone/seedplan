@@ -2,7 +2,7 @@ import api from './axios';
 
 export const login = async (email: string, password: string) => {
     const formData = new FormData();
-    formData.append('username', email);
+    formData.append('email', email);
     formData.append('password', password);
     
     const response = await api.post('/auth/token', formData);

@@ -1,31 +1,24 @@
-"""add seeds and tasks
+"""Add seeds and tasks
 
-Revision ID: add_seeds_and_tasks
-Revises: update_frost_dates_to_string
-Create Date: 2024-02-14 09:42:00.000000
+Revision ID: 6fb631bda89e
+Revises: 87cd9e6e6e22
+Create Date: 2025-05-09 17:22:05.985832+00:00
 
 """
+from typing import Sequence, Union
+
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
-from sqlalchemy import text
+
 
 # revision identifiers, used by Alembic.
-revision = 'add_seeds_and_tasks'
-down_revision = 'update_frost_dates_to_string'
-branch_labels = None
-depends_on = None
+revision: str = '6fb631bda89e'
+down_revision: Union[str, None] = '87cd9e6e6e22'
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
 
-def upgrade():
-    # Create enum type for planting_type if it doesn't exist
-    connection = op.get_bind()
-    result = connection.execute(
-        text("SELECT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'plantingtype')")
-    ).scalar()
-    if not result:
-        planting_type = postgresql.ENUM('direct_seed', 'transplant', name='plantingtype')
-        planting_type.create(op.get_bind())
 
+def upgrade() -> None:
     # Create seeds table
     op.create_table(
         'seeds',
@@ -40,12 +33,11 @@ def upgrade():
         sa.Column('seed_spacing', sa.Text(), nullable=True),
         sa.Column('seed_notes', sa.Text(), nullable=True),
         sa.Column('color', sa.String(), nullable=True),
-        sa.Column('is_system', sa.Boolean(), nullable=False, server_default='false'),
         sa.Column('user_id', sa.Integer(), nullable=True),
-        sa.Column('created_at', sa.Date(), nullable=False),
-        sa.Column('updated_at', sa.Date(), nullable=True),
+        sa.Column('created_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
+        sa.Column('updated_at', sa.DateTime(), onupdate=sa.func.now(), server_default=sa.func.now(), nullable=False),
         sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-        sa.PrimaryKeyConstraint('id')
+        sa.PrimaryKeyConstraint('id'),
     )
 
     # Create tasks table
@@ -58,14 +50,14 @@ def upgrade():
         sa.Column('start_date', sa.Date(), nullable=False),
         sa.Column('end_date', sa.Date(), nullable=False),
         sa.Column('notes', sa.Text(), nullable=True),
-        sa.Column('created_at', sa.Date(), nullable=False),
-        sa.Column('updated_at', sa.Date(), nullable=True),
+        sa.Column('created_at', sa.DateTime(), server_default=sa.func.now(), nullable=False),
+        sa.Column('updated_at', sa.DateTime(), onupdate=sa.func.now(), server_default=sa.func.now(), nullable=False),
         sa.ForeignKeyConstraint(['seed_id'], ['seeds.id'], ),
         sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-        sa.PrimaryKeyConstraint('id')
+        sa.PrimaryKeyConstraint('id'),
     )
 
-def downgrade():
+
+def downgrade() -> None:
     op.drop_table('tasks')
     op.drop_table('seeds')
-    op.execute('DROP TYPE IF EXISTS plantingtype') 
