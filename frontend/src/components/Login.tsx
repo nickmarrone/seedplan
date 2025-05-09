@@ -34,7 +34,7 @@ const Login: React.FC = () => {
             formDataObj.append('username', formData.email);
             formDataObj.append('password', formData.password);
 
-            const response = await axios.post('http://localhost:8000/token', formDataObj);
+            const response = await axios.post('http://localhost:8000/auth/token', formDataObj);
             localStorage.setItem('token', response.data.access_token);
             navigate('/dashboard');
         } catch (err) {

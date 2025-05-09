@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 // Create axios instance with base configuration
 const api = axios.create({

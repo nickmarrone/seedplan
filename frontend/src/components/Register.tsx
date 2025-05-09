@@ -9,8 +9,8 @@ import {
     Box,
     Link,
 } from '@mui/material';
-import axios from 'axios';
 import { RegisterCredentials } from '../types/auth';
+import api from '../utils/axios';
 
 const Register: React.FC = () => {
     const navigate = useNavigate();
@@ -32,15 +32,10 @@ const Register: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/register', formData);
-            // After successful registration, redirect to login
+            await api.post('/register', formData);
             navigate('/login');
-        } catch (err: any) {
-            if (err.response?.data?.detail) {
-                setError(err.response.data.detail);
-            } else {
-                setError('An error occurred during registration');
-            }
+        } catch (error) {
+            setError('Registration failed. Please try again.');
         }
     };
 

@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Float
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Float, Date
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from database import Base
 
 class User(Base):
@@ -11,8 +12,8 @@ class User(Base):
     full_name = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    created_at = Column(Date)
+    updated_at = Column(Date)
     
     # Gardening preferences
     gardening_zone = Column(String)
@@ -20,4 +21,8 @@ class User(Base):
     latitude = Column(Float)
     longitude = Column(Float)
     last_frost_date = Column(String)  # MM-DD format
-    first_frost_date = Column(String)  # MM-DD format 
+    first_frost_date = Column(String)  # MM-DD format
+
+    # Relationships
+    seeds = relationship("Seed", back_populates="user")
+    tasks = relationship("Task", back_populates="user") 

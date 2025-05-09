@@ -1,55 +1,37 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import Preferences from './components/Preferences';
+import PrivateRoute from './components/PrivateRoute';
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#2e7d32', // Green shade
-        },
-        secondary: {
-            main: '#ff9800', // Orange shade
-        },
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <Navigate to="/dashboard" replace />
     },
-});
-
-const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const token = localStorage.getItem('token');
-    return token ? <>{children}</> : <Navigate to="/login" />;
-};
+    {
+        path: '/login',
+        element: <Login />
+    },
+    {
+        path: '/register',
+        element: <Register />
+    },
+    {
+        path: '/dashboard',
+        element: <PrivateRoute><Dashboard /></PrivateRoute>
+    },
+    {
+        path: '/preferences',
+        element: <PrivateRoute><Preferences /></PrivateRoute>
+    }
+]);
 
 const App: React.FC = () => {
-    return (
-        <ThemeProvider theme={theme}>
-            <Router>
-                <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route
-                        path="/dashboard"
-                        element={
-                            <PrivateRoute>
-                                <Dashboard />
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route
-                        path="/preferences"
-                        element={
-                            <PrivateRoute>
-                                <Preferences />
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route path="/" element={<Navigate to="/dashboard" />} />
-                </Routes>
-            </Router>
-        </ThemeProvider>
-    );
+    return <RouterProvider router={router} />;
 };
 
 export default App; 
