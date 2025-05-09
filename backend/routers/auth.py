@@ -3,18 +3,20 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from database import get_db
 from models import User
-from schemas import UserCreate, User as UserSchema
+from schemas import UserBase, User as UserSchema
 from auth import verify_password, create_access_token, get_password_hash, ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import timedelta
-import os
 
 router = APIRouter(
     prefix="/auth",
     tags=["auth"]
 )
 
+class UserCreate(UserBase):
+    password: str
+
 @router.post("/register", response_model=UserSchema)
-def register(user: UserCreate, db: Session = Depends(get_db)):
+def register(user: UserCreate, db: Session = Depends(get_db)) -> UserSchema:
     # Check if user already exists
     db_user = db.query(User).filter(User.email == user.email).first()
     if db_user:
@@ -50,4 +52,4 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"} 
+    return {"access_token": access_token, "token_type": "bearer"}
