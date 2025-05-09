@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from database import get_db
 from models.task import Task
-from schemas import Task as TaskSchema, TaskCreate
+from schemas import Task as TaskSchema, TaskBase
 from auth import get_current_user
 from datetime import date
 
@@ -22,7 +22,7 @@ def get_tasks(
 
 @router.post("/", response_model=TaskSchema)
 def create_task(
-    task: TaskCreate,
+    task: TaskBase,
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
@@ -52,7 +52,7 @@ def get_task(
 @router.put("/{task_id}", response_model=TaskSchema)
 def update_task(
     task_id: int,
-    task: TaskCreate,
+    task: TaskSchema,
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):

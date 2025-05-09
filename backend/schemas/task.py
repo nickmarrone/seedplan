@@ -10,8 +10,6 @@ class TaskBase(BaseModel):
     notes: Optional[str] = None
     color: Optional[str] = None
 
-class TaskCreate(TaskBase):
-    pass
 
 class Task(TaskBase):
     id: int

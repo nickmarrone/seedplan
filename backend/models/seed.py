@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Date, Enum
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from database import Base
 import enum
@@ -22,8 +22,8 @@ class Seed(Base):
     seed_spacing = Column(String)
     seed_notes = Column(String)
     color = Column(String)
-    created_at = Column(Date)
-    updated_at = Column(Date)
+    created_at = Column(DateTime)
+    updated_at = Column(DateTime)
 
     user = relationship("User", back_populates="seeds")
     tasks = relationship("Task", back_populates="seed") 

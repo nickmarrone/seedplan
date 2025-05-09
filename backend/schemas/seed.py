@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import date
+from datetime import datetime
 from typing import Optional
 
 class SeedBase(BaseModel):
@@ -14,14 +14,10 @@ class SeedBase(BaseModel):
     seed_notes: Optional[str] = None
     color: Optional[str] = None
 
-class SeedCreate(SeedBase):
-    pass
+
 
 class Seed(SeedBase):
     id: int
     user_id: int
-    created_at: date
-    updated_at: Optional[date] = None
-
-    class Config:
-        from_attributes = True 
+    created_at: datetime
+    updated_at: datetime
