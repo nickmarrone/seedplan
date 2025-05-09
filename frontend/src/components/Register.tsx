@@ -15,6 +15,7 @@ import api from '../utils/axios';
 const Register: React.FC = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState<RegisterCredentials>({
+        username: '',
         email: '',
         full_name: '',
         password: '',
@@ -81,6 +82,17 @@ const Register: React.FC = () => {
                             autoComplete="name"
                             autoFocus
                             value={formData.full_name}
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
+                            value={formData.username}
                             onChange={handleChange}
                         />
                         <TextField

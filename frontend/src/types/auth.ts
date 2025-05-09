@@ -1,5 +1,6 @@
 export interface User {
     id: number;
+    username: string;
     email: string;
     full_name: string | null;
     is_active: boolean;
@@ -14,11 +15,12 @@ export interface User {
 }
 
 export interface LoginCredentials {
-    email: string;
+    username: string;
     password: string;
 }
 
 export interface RegisterCredentials {
+    username: string;
     email: string;
     full_name: string;
     password: string;

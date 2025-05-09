@@ -15,7 +15,7 @@ import { LoginCredentials } from '../types/auth';
 const Login: React.FC = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState<LoginCredentials>({
-        email: '',
+        username: '',
         password: '',
     });
     const [error, setError] = useState<string>('');
@@ -31,14 +31,14 @@ const Login: React.FC = () => {
         e.preventDefault();
         try {
             const formDataObj = new FormData();
-            formDataObj.append('email', formData.email);
+            formDataObj.append('username', formData.username);
             formDataObj.append('password', formData.password);
 
             const response = await axios.post('http://localhost:8000/auth/token', formDataObj);
             localStorage.setItem('token', response.data.access_token);
             navigate('/dashboard');
         } catch (err) {
-            setError('Invalid email or password');
+            setError('Invalid username or password');
         }
     };
 
@@ -76,12 +76,11 @@ const Login: React.FC = () => {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            value={formData.email}
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
+                            value={formData.username}
                             onChange={handleChange}
                         />
                         <TextField
