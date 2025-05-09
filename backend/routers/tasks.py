@@ -5,7 +5,7 @@ from database import get_db
 from models.task import Task
 from schemas import Task as TaskSchema, TaskBase
 from auth import get_current_user
-from datetime import date
+from datetime import datetime
 
 router = APIRouter(
     prefix="/tasks",
@@ -28,7 +28,9 @@ def create_task(
 ):
     db_task = Task(
         **task.dict(),
-        user_id=current_user.id
+        user_id=current_user.id,
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
     )
     db.add(db_task)
     db.commit()

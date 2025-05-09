@@ -35,7 +35,6 @@ const TaskDialog: React.FC<TaskDialogProps> = ({ open, onClose, onSave, seed, ta
         start_date: new Date().toISOString().split('T')[0],
         end_date: new Date().toISOString().split('T')[0],
         notes: '',
-        color: seed.color || '#000000',
         ...task,
     });
 

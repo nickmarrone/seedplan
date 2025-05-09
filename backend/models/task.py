@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, ForeignKey, Date, DateTime
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -12,8 +12,8 @@ class Task(Base):
     start_date = Column(Date, nullable=False)
     end_date = Column(Date, nullable=False)
     notes = Column(String)
-    created_at = Column(Date)
-    updated_at = Column(Date)
+    created_at = Column(DateTime)
+    updated_at = Column(DateTime)
 
     user = relationship("User", back_populates="tasks")
     seed = relationship("Seed", back_populates="tasks") 
