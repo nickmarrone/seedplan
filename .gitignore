@@ -1,4 +1,4 @@
 **/__pycache__/
 **/.env
 frontend/node_modules/
-
+**/*.egg-info/
