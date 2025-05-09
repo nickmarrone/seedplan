@@ -1,6 +1,6 @@
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from database import get_db
 from models import User
@@ -19,7 +19,7 @@ async def read_users_me(current_user: User = Depends(get_current_user)) -> UserS
 class UserUpdate(BaseModel):
     full_name: str
     gardening_zone: Optional[str] = None
-    zipcode: Optional[str] = None
+    zipcode: str | None = Field(None, description="Zipcode in format '12345'", min_length=5, max_length=5)
     last_frost_date: Optional[str] = None  # MM-DD format
     first_frost_date: Optional[str] = None  # MM-DD format
 
