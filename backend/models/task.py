@@ -12,7 +12,6 @@ class Task(Base):
     start_date = Column(Date, nullable=False)
     end_date = Column(Date, nullable=False)
     notes = Column(String)
-    color = Column(String)
     created_at = Column(Date)
     updated_at = Column(Date)
 

@@ -22,7 +22,6 @@ class Seed(Base):
     seed_spacing = Column(String)
     seed_notes = Column(String)
     color = Column(String)
-    is_system = Column(Boolean, default=False)
     created_at = Column(Date)
     updated_at = Column(Date)
 
