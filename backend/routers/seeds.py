@@ -3,9 +3,9 @@ from sqlalchemy.orm import Session
 from typing import List
 from database import get_db
 from models.seed import Seed
-from schemas import Seed as SeedSchema, SeedCreate
+from schemas import Seed as SeedSchema, SeedBase
 from auth import get_current_user
-from datetime import date
+from datetime import datetime
 
 router = APIRouter(
     prefix="/seeds",
@@ -17,18 +17,21 @@ def get_seeds(
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
+    # TODO: look up the canonical way to query -- this looks like I am getting the full database and then filtering in memory
     seeds = db.query(Seed).filter(Seed.user_id == current_user.id).all()
     return seeds
 
 @router.post("/", response_model=SeedSchema)
 def create_seed(
-    seed: SeedCreate,
+    seed: SeedBase,
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
     db_seed = Seed(
         **seed.dict(),
-        user_id=current_user.id
+        user_id=current_user.id,
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
     )
     db.add(db_seed)
     db.commit()
@@ -52,7 +55,7 @@ def get_seed(
 @router.put("/{seed_id}", response_model=SeedSchema)
 def update_seed(
     seed_id: int,
-    seed: SeedCreate,
+    seed: SeedSchema,
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):

@@ -25,7 +25,6 @@ export interface Task {
     start_date: string;
     end_date: string;
     notes: string;
-    color?: string;
     created_at?: string;
     updated_at?: string;
 }
