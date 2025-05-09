@@ -41,7 +41,3 @@ async def get_location_data(zipcode: str) -> Dict:
             "state": data["places"][0]["state"],
             "city": data["places"][0]["place name"]
         }
-
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to SeedPlan API"}   
