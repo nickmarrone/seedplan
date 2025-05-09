@@ -76,14 +76,14 @@ const Preferences: React.FC = () => {
     const handleZipcodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const zipcode = e.target.value;
         // Only allow numeric input and limit to 5 digits
-        if (!/^\d*$/.test(zipcode)) {
+        if (!/^\d*$/.test(zipcode) || zipcode.length > 5) {
             return;
         }
         
         if (user) {
-            setUser({
-                ...user,
-                zipcode
+            setUser({ 
+                ...user, 
+                zipcode: zipcode,
             });
         }
 
@@ -95,7 +95,8 @@ const Preferences: React.FC = () => {
                     setUser({
                         ...user,
                         latitude: response.data.latitude,
-                        longitude: response.data.longitude
+                        longitude: response.data.longitude,
+                        zipcode: zipcode,
                     });
                 }
             } catch (err) {
